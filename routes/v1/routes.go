@@ -9,7 +9,7 @@ import (
 )
 
 func InitalizeMailingRoutes(r *gin.RouterGroup) {
-	mailGroup := r.Group("/")
+	mailGroup := r.Group("/mail")
 	{
 		mailGroup.GET("/", func(ctx *gin.Context) {
 
@@ -20,14 +20,13 @@ func InitalizeMailingRoutes(r *gin.RouterGroup) {
 			})
 		})
 
-		mailGroup.POST("/verify", func(ctx *gin.Context) {
+		mailGroup.POST("/", func(ctx *gin.Context) {
 			type RequestBody struct {
 				Email    string `json:"email" binding:"required,email"`
 				UseProxy bool   `json:"use_proxy"`
 			}
 
 			var reqBody RequestBody
-			
 
 			if err := ctx.ShouldBindJSON(&reqBody); err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{
@@ -48,10 +47,14 @@ func InitalizeMailingRoutes(r *gin.RouterGroup) {
 				return
 			}
 
-			ctx.JSON(http.StatusOK, gin.H{"result": result})
+			ctx.JSON(http.StatusOK, gin.H{
+				"error":   nil,
+				"success": false,
+				"data":    result,
+			})
 		})
 
-		mailGroup.POST("/verify-bulk", func(ctx *gin.Context) {
+		mailGroup.POST("/bulk", func(ctx *gin.Context) {
 			type RequestBody struct {
 				Emails   []string `json:"emails" binding:"required,dive,email"`
 				UseProxy bool     `json:"use_proxy"`
@@ -69,8 +72,11 @@ func InitalizeMailingRoutes(r *gin.RouterGroup) {
 				return
 			}
 
-			ctx.JSON(http.StatusOK, gin.H{"results": results})
+			ctx.JSON(http.StatusOK, gin.H{
+				"error":   nil,
+				"success": false,
+				"data":    results,
+			})
 		})
-
 	}
 }

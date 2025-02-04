@@ -4,19 +4,16 @@ import (
 	"fmt"
 	"log"
 	"os"
-
 	emailverifier "github.com/AfterShip/email-verifier"
-)
-
-var (
-	proxyURI = os.Getenv("PROXY_URI")
 )
 
 func VerifySingleMail(email string, useProxy bool) (*emailverifier.Result, error) {
 	verifier := emailverifier.NewVerifier()
-	log.Print("proxy use ",useProxy)
+	log.Print("proxy use ", useProxy)
 	if useProxy {
-		log.Print("Using proxy true",proxyURI)
+
+		var proxyURI = os.Getenv("PROXY_URI")
+		log.Print("Using proxy true", proxyURI)
 		verifier = verifier.Proxy(proxyURI)
 	}
 
@@ -30,11 +27,11 @@ func VerifySingleMail(email string, useProxy bool) (*emailverifier.Result, error
 
 func VerifyBulkMail(emails []string, useProxy bool) (map[string]*emailverifier.Result, error) {
 	verifier := emailverifier.NewVerifier()
-	if useProxy && proxyURI != "" {
-		log.Print("Using proxy true",proxyURI)
+	if useProxy {
+		var proxyURI = os.Getenv("PROXY_URI")
+		log.Print("Using proxy true", proxyURI)
 		verifier = verifier.Proxy(proxyURI)
 	}
-
 
 	results := make(map[string]*emailverifier.Result)
 	for _, email := range emails {

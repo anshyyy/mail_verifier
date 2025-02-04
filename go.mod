@@ -1,6 +1,6 @@
 module github.com/anshyyy/mail_verifier
 
-go 1.23.2
+go 1.23
 
 require (
 	github.com/AfterShip/email-verifier v1.4.1 // indirect
