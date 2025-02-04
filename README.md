@@ -102,7 +102,7 @@ This is the verify a single mail.
 ```
 
 #### 3. `POST /mail/bulk`
-This is the verify a single mail.
+This is to verify bulk mails.
 
 **Body**
 ```json
